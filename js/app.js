@@ -12,8 +12,14 @@
     const statEfficiency = document.getElementById('stat-efficiency');
     const newEntryBtn = document.getElementById('new-entry-btn');
     const mobileAddBtn = document.getElementById('mobile-add-btn');
+    const archivedList = document.getElementById('archived-list');
+    const deleteModal = document.getElementById('delete-modal');
+    const modalCancel = document.getElementById('modal-cancel');
+    const modalConfirm = document.getElementById('modal-confirm');
 
     let draggedItem = null;
+    let currentView = 'journal';
+    let pendingDeleteId = null;
 
     function init() {
         Storage.pruneOldData();
@@ -23,21 +29,30 @@
         renderActivityGrid();
         renderHabits();
         updateStats();
+        setupNav();
+        setupModal();
 
+        setupMobileMenu();
         addForm.addEventListener('submit', onAddHabit);
 
         newEntryBtn.addEventListener('click', () => {
-            habitInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => habitInput.focus(), 400);
+            if (currentView !== 'journal') switchView('journal');
+            setTimeout(() => {
+                habitInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => habitInput.focus(), 400);
+            }, currentView !== 'journal' ? 100 : 0);
         });
 
         mobileAddBtn.addEventListener('click', () => {
-            habitInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => habitInput.focus(), 400);
+            if (currentView !== 'journal') switchView('journal');
+            setTimeout(() => {
+                habitInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => habitInput.focus(), 400);
+            }, currentView !== 'journal' ? 100 : 0);
         });
     }
 
-    // --- Theme (diagonal wipe from top-right) ---
+    // --- Theme ---
 
     function initTheme() {
         const saved = localStorage.getItem('habitual_theme');
@@ -65,6 +80,55 @@
         document.getElementById('theme-icon').textContent = icon;
     }
 
+    // --- Mobile Menu ---
+
+    function setupMobileMenu() {
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('mobile-sidebar-backdrop');
+
+        hamburger.addEventListener('click', () => {
+            sidebar.classList.add('mobile-open');
+            backdrop.classList.remove('hidden');
+        });
+
+        backdrop.addEventListener('click', closeMobileMenu);
+    }
+
+    function closeMobileMenu() {
+        document.getElementById('sidebar').classList.remove('mobile-open');
+        document.getElementById('mobile-sidebar-backdrop').classList.add('hidden');
+    }
+
+    // --- Navigation ---
+
+    function setupNav() {
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchView(item.dataset.view);
+                closeMobileMenu();
+            });
+        });
+    }
+
+    function switchView(view) {
+        currentView = view;
+
+        document.querySelectorAll('.nav-item').forEach(n => {
+            n.classList.toggle('active', n.dataset.view === view);
+        });
+
+        // Show/hide journal content
+        const journalSections = document.querySelectorAll('.quote-section, .archive-section, .today-section');
+        journalSections.forEach(s => s.classList.toggle('hidden', view !== 'journal'));
+
+        // Show/hide archive view
+        document.getElementById('view-archive').classList.toggle('hidden', view !== 'archive');
+
+        if (view === 'archive') renderArchivedList();
+    }
+
     // --- Date ---
 
     function renderDate() {
@@ -80,7 +144,6 @@
     // --- Quote ---
 
     function renderQuote() {
-        // Day of year determines the quote (1 per day, cycles through 365)
         const now = new Date();
         const start = new Date(now.getFullYear(), 0, 0);
         const diff = now - start;
@@ -111,7 +174,6 @@
         const totalDays = Math.round((endDate - startDate) / 86400000) + 1;
         const data = Storage.getActivityData(totalDays);
 
-        // Pad front if startDate isn't Sunday
         const startDow = startDate.getDay();
         for (let i = 0; i < startDow; i++) {
             const empty = document.createElement('div');
@@ -121,7 +183,6 @@
             activityGrid.appendChild(empty);
         }
 
-        // Track which column each month first appears in
         const monthColumns = {};
         let totalColumns = 0;
 
@@ -142,12 +203,10 @@
                 ? `${dateStr}: ${day.completed}/${day.total}`
                 : `${dateStr}: No habits`;
 
-            // Figure out which column this cell is in (0-indexed)
             const cellIndex = startDow + i;
             const col = Math.floor(cellIndex / 7);
             totalColumns = Math.max(totalColumns, col + 1);
 
-            // Record the first column for each month
             const monthKey = `${dateObj.getFullYear()}-${dateObj.getMonth()}`;
             if (!(monthKey in monthColumns)) {
                 monthColumns[monthKey] = {
@@ -159,7 +218,6 @@
             activityGrid.appendChild(cell);
         });
 
-        // Render month labels positioned by column percentage
         const monthsEl = document.getElementById('archive-months');
         monthsEl.innerHTML = '';
         monthsEl.style.position = 'relative';
@@ -168,7 +226,6 @@
         let lastPct = -10;
         entries.forEach(entry => {
             const pct = (entry.col / totalColumns) * 100;
-            // Skip if too close to previous label to avoid overlap
             if (pct - lastPct < 4) return;
             lastPct = pct;
 
@@ -244,15 +301,16 @@
             right.appendChild(streakBadge);
         }
 
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'habit-delete';
-        deleteBtn.setAttribute('aria-label', 'Delete habit');
-        deleteBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:1.125rem">close</span>';
-        deleteBtn.addEventListener('click', (e) => {
+        // Archive button (replaces delete)
+        const archiveBtn = document.createElement('button');
+        archiveBtn.className = 'habit-delete';
+        archiveBtn.setAttribute('aria-label', 'Archive habit');
+        archiveBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:1.125rem">archive</span>';
+        archiveBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            onDeleteHabit(habit.id);
+            onArchiveHabit(habit.id);
         });
-        right.appendChild(deleteBtn);
+        right.appendChild(archiveBtn);
 
         // Drag events
         li.addEventListener('dragstart', (e) => {
@@ -297,6 +355,104 @@
         li.appendChild(right);
 
         return li;
+    }
+
+    // --- Archive View ---
+
+    function renderArchivedList() {
+        const archived = Storage.loadArchivedHabits();
+        archivedList.innerHTML = '';
+
+        if (archived.length === 0) {
+            const empty = document.createElement('li');
+            empty.className = 'archived-empty';
+            empty.textContent = 'No archived habits.';
+            archivedList.appendChild(empty);
+            return;
+        }
+
+        archived.forEach(habit => {
+            const li = document.createElement('li');
+            li.className = 'archived-item';
+
+            const left = document.createElement('div');
+            left.className = 'archived-item-left';
+
+            const name = document.createElement('span');
+            name.className = 'archived-item-name';
+            name.textContent = habit.name;
+
+            const meta = document.createElement('span');
+            meta.className = 'archived-item-meta';
+            const streak = Storage.getStreak(habit.id);
+            const parts = [];
+            if (habit.archivedAt) parts.push(`Archived ${habit.archivedAt}`);
+            if (streak > 0) parts.push(`${streak}d streak`);
+            meta.textContent = parts.join(' \u00B7 ');
+
+            left.appendChild(name);
+            left.appendChild(meta);
+
+            const actions = document.createElement('div');
+            actions.className = 'archived-item-actions';
+
+            // Restore button
+            const restoreBtn = document.createElement('button');
+            restoreBtn.className = 'archived-btn';
+            restoreBtn.setAttribute('aria-label', 'Restore habit');
+            restoreBtn.innerHTML = '<span class="material-symbols-outlined">unarchive</span>';
+            restoreBtn.addEventListener('click', () => {
+                Storage.restoreHabit(habit.id);
+                renderArchivedList();
+                renderHabits();
+                updateStats();
+                renderActivityGrid();
+            });
+
+            // Delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'archived-btn archived-btn-delete';
+            deleteBtn.setAttribute('aria-label', 'Delete permanently');
+            deleteBtn.innerHTML = '<span class="material-symbols-outlined">delete_forever</span>';
+            deleteBtn.addEventListener('click', () => {
+                pendingDeleteId = habit.id;
+                deleteModal.classList.remove('hidden');
+            });
+
+            actions.appendChild(restoreBtn);
+            actions.appendChild(deleteBtn);
+
+            li.appendChild(left);
+            li.appendChild(actions);
+            archivedList.appendChild(li);
+        });
+    }
+
+    // --- Delete Confirmation Modal ---
+
+    function setupModal() {
+        modalCancel.addEventListener('click', () => {
+            pendingDeleteId = null;
+            deleteModal.classList.add('hidden');
+        });
+
+        modalConfirm.addEventListener('click', () => {
+            if (pendingDeleteId) {
+                Storage.permanentlyDeleteHabit(pendingDeleteId);
+                pendingDeleteId = null;
+                deleteModal.classList.add('hidden');
+                renderArchivedList();
+                renderActivityGrid();
+            }
+        });
+
+        // Close on backdrop click
+        deleteModal.addEventListener('click', (e) => {
+            if (e.target === deleteModal) {
+                pendingDeleteId = null;
+                deleteModal.classList.add('hidden');
+            }
+        });
     }
 
     // --- Stats ---
@@ -355,9 +511,8 @@
         renderActivityGrid();
     }
 
-    function onDeleteHabit(habitId) {
-        const habits = Storage.loadHabits().filter(h => h.id !== habitId);
-        Storage.saveHabits(habits);
+    function onArchiveHabit(habitId) {
+        Storage.archiveHabit(habitId);
         renderHabits();
         updateStats();
         renderActivityGrid();

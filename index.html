@@ -26,6 +26,10 @@
                     <span class="material-symbols-outlined">book_2</span>
                     <span class="nav-label">Journal</span>
                 </a>
+                <a href="#" class="nav-item" data-view="archive">
+                    <span class="material-symbols-outlined">inventory_2</span>
+                    <span class="nav-label">Vault</span>
+                </a>
             </nav>
             <div class="sidebar-footer">
                 <button class="new-entry-btn" id="new-entry-btn">New Entry</button>
@@ -36,11 +40,19 @@
         <main class="main">
             <!-- Top bar -->
             <header class="top-bar">
-                <h1 class="mobile-logo">Habitual.</h1>
+                <div class="top-bar-left">
+                    <button class="hamburger" id="hamburger" aria-label="Open menu">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <h1 class="mobile-logo">Habitual.</h1>
+                </div>
                 <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
                     <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
                 </button>
             </header>
+
+            <!-- Mobile sidebar overlay -->
+            <div class="mobile-sidebar-backdrop hidden" id="mobile-sidebar-backdrop"></div>
 
             <!-- Section 1: Editorial Quote -->
             <section class="quote-section">
@@ -117,7 +129,25 @@
                     </div>
                 </div>
             </section>
+            <!-- Archive View -->
+            <section class="archive-view hidden" id="view-archive">
+                <h2 class="section-title">The Vault</h2>
+                <p class="archive-view-desc">Habits here are paused. Restore them to your journal or remove permanently.</p>
+                <ul class="archived-list" id="archived-list"></ul>
+            </section>
         </main>
+    </div>
+
+    <!-- Delete confirmation modal -->
+    <div class="modal-backdrop hidden" id="delete-modal">
+        <div class="modal">
+            <h3 class="modal-title">Delete permanently?</h3>
+            <p class="modal-body">This habit and its history will be removed forever. This cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="modal-cancel">Cancel</button>
+                <button class="modal-btn modal-btn-confirm" id="modal-confirm">Delete</button>
+            </div>
+        </div>
     </div>
 
     <!-- Mobile FAB -->

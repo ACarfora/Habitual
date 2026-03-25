@@ -180,14 +180,18 @@ body {
    =================================== */
 
 .sidebar {
-    display: none;
+    display: flex;
     flex-direction: column;
     width: 256px;
     height: 100vh;
     background: var(--surface);
     padding: 32px 24px;
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
 }
 
 .sidebar-brand {
@@ -295,10 +299,48 @@ body {
     padding: 16px 0;
 }
 
+.top-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hamburger {
+    background: none;
+    border: none;
+    color: var(--on-surface-variant);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.hamburger .material-symbols-outlined {
+    font-size: 1.5rem;
+}
+
 .mobile-logo {
     font-family: var(--font-headline);
     font-weight: 800;
     color: var(--on-background);
+}
+
+/* Mobile sidebar overlay */
+.mobile-sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    backdrop-filter: blur(2px);
+}
+
+.mobile-sidebar-backdrop.hidden {
+    display: none;
+}
+
+.sidebar.mobile-open {
+    transform: translateX(0);
 }
 
 /* ===================================
@@ -878,7 +920,12 @@ body {
 
 @media (min-width: 768px) {
     .sidebar {
-        display: flex;
+        position: sticky;
+        transform: none;
+    }
+
+    .hamburger {
+        display: none;
     }
 
     .mobile-logo {
@@ -916,6 +963,189 @@ body {
 
 .hidden {
     display: none !important;
+}
+
+/* ===================================
+   Archive View
+   =================================== */
+
+.archive-view {
+    max-width: 640px;
+}
+
+.archive-view .section-title {
+    font-family: var(--font-headline);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--on-background);
+    text-transform: none;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+}
+
+.archive-view-desc {
+    font-size: 0.8125rem;
+    color: var(--outline-variant);
+    margin-bottom: 32px;
+}
+
+.archived-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.archived-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: var(--surface-container-low);
+    border-radius: 8px;
+    transition: background-color 0.7s ease;
+}
+
+.archived-item-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.archived-item-name {
+    font-family: var(--font-headline);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--on-background);
+    letter-spacing: -0.01em;
+}
+
+.archived-item-meta {
+    font-size: 0.6875rem;
+    color: var(--outline-variant);
+}
+
+.archived-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.archived-btn {
+    background: none;
+    border: 1px solid var(--surface-variant);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    color: var(--on-surface-variant);
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.archived-btn:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.archived-btn-delete:hover {
+    color: #b44;
+    border-color: #b44;
+}
+
+.archived-btn .material-symbols-outlined {
+    font-size: 1.125rem;
+}
+
+.archived-empty {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--outline-variant);
+    font-size: 0.875rem;
+    font-style: italic;
+}
+
+/* ===================================
+   Confirmation Modal
+   =================================== */
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(4px);
+}
+
+.modal-backdrop.hidden {
+    display: none;
+}
+
+.modal {
+    background: var(--surface-container-lowest);
+    border-radius: 12px;
+    padding: 32px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+.modal-title {
+    font-family: var(--font-headline);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--on-background);
+    margin-bottom: 12px;
+}
+
+.modal-body {
+    font-size: 0.875rem;
+    color: var(--on-surface-variant);
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.modal-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-family: var(--font-headline);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    border: none;
+}
+
+.modal-btn:active {
+    transform: scale(0.95);
+}
+
+.modal-btn-cancel {
+    background: var(--surface-container-high);
+    color: var(--on-surface);
+}
+
+.modal-btn-confirm {
+    background: #b44;
+    color: #fff;
+}
+
+.modal-btn-confirm:hover {
+    background: #c55;
 }
 
 /* Dark mode grain boost */

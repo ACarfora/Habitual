@@ -129,6 +129,53 @@ const Storage = (() => {
         if (changed) saveCompletions(completions);
     }
 
+    // --- Archive ---
+
+    const ARCHIVED_KEY = 'habitual_archived';
+
+    function loadArchivedHabits() {
+        const raw = localStorage.getItem(ARCHIVED_KEY);
+        if (!raw) return [];
+        try { return JSON.parse(raw); } catch { return []; }
+    }
+
+    function saveArchivedHabits(habits) {
+        localStorage.setItem(ARCHIVED_KEY, JSON.stringify(habits));
+    }
+
+    function archiveHabit(habitId) {
+        const habits = loadHabits();
+        const index = habits.findIndex(h => h.id === habitId);
+        if (index === -1) return;
+
+        const [habit] = habits.splice(index, 1);
+        habit.archivedAt = getTodayKey();
+        saveHabits(habits);
+
+        const archived = loadArchivedHabits();
+        archived.push(habit);
+        saveArchivedHabits(archived);
+    }
+
+    function restoreHabit(habitId) {
+        const archived = loadArchivedHabits();
+        const index = archived.findIndex(h => h.id === habitId);
+        if (index === -1) return;
+
+        const [habit] = archived.splice(index, 1);
+        delete habit.archivedAt;
+        saveArchivedHabits(archived);
+
+        const habits = loadHabits();
+        habits.push(habit);
+        saveHabits(habits);
+    }
+
+    function permanentlyDeleteHabit(habitId) {
+        const archived = loadArchivedHabits().filter(h => h.id !== habitId);
+        saveArchivedHabits(archived);
+    }
+
     return {
         getTodayKey,
         loadHabits,
@@ -138,5 +185,9 @@ const Storage = (() => {
         getStreak,
         getActivityData,
         pruneOldData,
+        loadArchivedHabits,
+        archiveHabit,
+        restoreHabit,
+        permanentlyDeleteHabit,
     };
 })();
