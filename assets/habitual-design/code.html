@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Habitual — Analog Archivist</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;700;800&amp;family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "outline": "#7a7c73",
+              "outline-variant": "#b1b3a9",
+              "error-container": "#fe8b70",
+              "secondary-dim": "#5a5247",
+              "on-background": "#31332c",
+              "on-primary-fixed": "#3a4230",
+              "secondary-fixed": "#ece1d2",
+              "error": "#9e422c",
+              "tertiary-fixed": "#f6f3f2",
+              "on-secondary-fixed": "#453e34",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-fixed": "#4a4949",
+              "tertiary": "#5f5f5f",
+              "tertiary-container": "#f6f3f2",
+              "surface-dim": "#d9dbcf",
+              "surface-container": "#efeee6",
+              "on-secondary-container": "#585145",
+              "on-tertiary": "#fbf8f8",
+              "surface-container-low": "#f5f4ed",
+              "surface": "#fbf9f4",
+              "on-tertiary-container": "#5c5b5b",
+              "primary-dim": "#4d5542",
+              "primary-fixed-dim": "#cfd8bf",
+              "background": "#fbf9f4",
+              "on-error": "#fff7f6",
+              "inverse-on-surface": "#9e9d98",
+              "secondary-container": "#ece1d2",
+              "tertiary-dim": "#535353",
+              "on-secondary-fixed-variant": "#625a4f",
+              "primary-container": "#dde6cd",
+              "on-error-container": "#742410",
+              "secondary-fixed-dim": "#ded3c4",
+              "on-tertiary-fixed-variant": "#676666",
+              "surface-tint": "#59614d",
+              "tertiary-fixed-dim": "#e7e5e4",
+              "primary": "#59614d",
+              "inverse-primary": "#f4fde3",
+              "on-secondary": "#fff8f1",
+              "surface-bright": "#fbf9f4",
+              "secondary": "#665e52",
+              "inverse-surface": "#0e0e0c",
+              "primary-fixed": "#dde6cd",
+              "on-primary-fixed-variant": "#565e4b",
+              "error-dim": "#5c1202",
+              "surface-variant": "#e2e3d8",
+              "on-primary": "#f3fbe1",
+              "on-surface-variant": "#5e6057",
+              "on-surface": "#31332c",
+              "surface-container-highest": "#e2e3d8",
+              "on-primary-container": "#4c5441",
+              "surface-container-high": "#e9e9df"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.film-grain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.04;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBWeHQ_he6bk2UuE5XSrxp99l2AKyoj-JZJb1fjfTL5UJOT8V6Ifvvjez0nl1eLm3-d-AkO9MK6b0uvKa81MfUGuacGMc3pIfnJg4hwIRtWhYVK4kgyI0UIxga1PKu7-p1-IUxSHVMfgVw4EGkmENdEtSROpYgVyUTUrauode86upZQE91xtd-JI1gvRYD5dtYq5ZJfC7Jm7ZTPi8SiogDip3xz-_egS93f0j0UaNxj5wXbfEwl63gcagpRIofGCZCNWItDHryV4Ts)
+    }
+.asymmetric-grid {
+    display: grid;
+    grid-template-columns: repeat(53, 1fr);
+    gap: 3px
+    }
+.mechanical-snap {
+    transition: all 200ms steps(4, end)
+    }
+input::placeholder {
+    color: #b1b3a9;
+    font-weight: 300
+    }</style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<div class="film-grain"></div>
+<div class="flex min-h-screen">
+<!-- SideNavBar Component -->
+<aside class="hidden md:flex flex-col h-screen w-64 border-r-0 bg-[#fbf9f4] dark:bg-[#1c1d1a] py-8 px-6 sticky top-0">
+<div class="mb-12">
+<h1 class="font-headline text-2xl font-bold tracking-tighter text-[#31332c] dark:text-[#fbf9f4]">Habitual</h1>
+<p class="font-manrope text-xs tracking-[0.1em] uppercase text-[#5e6057] dark:text-[#b1b3a9] mt-1">Analog Archivist</p>
+</div>
+<nav class="flex-grow space-y-1">
+<a class="flex items-center py-3 group transition-colors duration-200 text-[#59614d] dark:text-[#dde6cd] font-bold border-l-4 border-[#59614d] pl-4" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="book_2">book_2</span>
+<span class="font-manrope text-sm tracking-tight font-medium uppercase">Journal</span>
+</a>
+<a class="flex items-center py-3 group hover:bg-[#e2e3d8]/50 dark:hover:bg-[#31332c] transition-colors duration-200 text-[#5e6057] dark:text-[#b1b3a9] pl-5" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="inventory_2">inventory_2</span>
+<span class="font-manrope text-sm tracking-tight font-medium uppercase">Archive</span>
+</a>
+<a class="flex items-center py-3 group hover:bg-[#e2e3d8]/50 dark:hover:bg-[#31332c] transition-colors duration-200 text-[#5e6057] dark:text-[#b1b3a9] pl-5" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="analytics">analytics</span>
+<span class="font-manrope text-sm tracking-tight font-medium uppercase">Insights</span>
+</a>
+<a class="flex items-center py-3 group hover:bg-[#e2e3d8]/50 dark:hover:bg-[#31332c] transition-colors duration-200 text-[#5e6057] dark:text-[#b1b3a9] pl-5" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="settings">settings</span>
+<span class="font-manrope text-sm tracking-tight font-medium uppercase">Settings</span>
+</a>
+</nav>
+<div class="mt-auto">
+<button class="w-full bg-primary text-on-primary py-4 rounded-md font-headline font-bold text-sm tracking-widest uppercase active:scale-95 transition-transform duration-150">
+                    New Entry
+                </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-8 md:px-20 py-12 max-w-7xl mx-auto overflow-x-hidden">
+<!-- TopAppBar for Mobile -->
+<header class="md:hidden flex justify-between items-center w-full mb-12 sticky top-0 bg-[#fbf9f4]/80 backdrop-blur-md z-50 py-4">
+<h1 class="font-headline font-black text-[#31332c]">Habitual</h1>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-[#59614d]" data-icon="grain">grain</span>
+<span class="material-symbols-outlined text-[#59614d]" data-icon="calendar_today">calendar_today</span>
+</div>
+</header>
+<!-- Section 1: Editorial Quote -->
+<section class="mb-24 mt-12 md:mt-24">
+<div class="max-w-3xl">
+<span class="block font-label text-[0.6875rem] uppercase tracking-[0.2em] text-outline-variant mb-6">Volume 04 // Daily Reflection</span>
+<h2 class="font-headline text-4xl md:text-6xl font-extrabold text-on-background leading-tight tracking-tighter">
+                        "The goal is not to read a book, the goal is to <span class="text-primary italic">become</span> a reader."
+                    </h2>
+<p class="mt-8 font-label text-sm text-on-surface-variant italic opacity-80">— James Clear, Atomic Habits</p>
+</div>
+</section>
+<!-- Section 2: Film Strip / Heatmap Activity -->
+<section class="mb-24">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h3 class="font-headline text-lg font-bold text-on-background">Continuity Archive</h3>
+<p class="font-label text-xs uppercase tracking-widest text-outline-variant">Yearly Exposure Grid</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label text-[10px] uppercase text-outline-variant">Less</span>
+<div class="flex gap-1">
+<div class="w-3 h-3 bg-surface-container"></div>
+<div class="w-3 h-3 bg-primary-fixed-dim"></div>
+<div class="w-3 h-3 bg-primary-dim opacity-60"></div>
+<div class="w-3 h-3 bg-primary"></div>
+</div>
+<span class="font-label text-[10px] uppercase text-outline-variant">More</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 md:p-10 rounded-lg overflow-x-auto">
+<div class="min-w-[800px]">
+<div class="asymmetric-grid">
+<!-- Generation of 53 weeks x 7 days heat map -->
+<!-- Using CSS background classes for Fujifilm greens -->
+<script>
+                                const grid = document.querySelector('.asymmetric-grid');
+                                const intensities = ['bg-surface-container', 'bg-surface-container', 'bg-primary-fixed-dim', 'bg-primary-fixed-dim', 'bg-primary-dim', 'bg-primary'];
+                                for (let i = 0; i < 371; i++) {
+                                    const div = document.createElement('div');
+                                    const intensity = intensities[Math.floor(Math.random() * intensities.length)];
+                                    div.className = `aspect-square ${intensity} rounded-sm opacity-90 hover:opacity-100 transition-opacity cursor-crosshair`;
+                                    grid.appendChild(div);
+                                }
+                            </script>
+</div>
+<div class="flex justify-between mt-4 font-label text-[10px] uppercase tracking-tighter text-outline-variant">
+<span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Today's Tasks -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24">
+<div class="lg:col-span-4">
+<div class="sticky top-24">
+<h2 class="font-headline text-5xl font-black text-on-background tracking-tighter mb-2">24.05</h2>
+<p class="font-label text-sm uppercase tracking-[0.3em] text-outline-variant mb-12">Thursday Archive</p>
+<div class="space-y-8">
+<div>
+<label class="block font-label text-[0.6875rem] uppercase tracking-widest text-on-surface-variant mb-4">Input New Metric</label>
+<div class="relative group">
+<input class="w-full bg-transparent border-b-2 border-surface-variant focus:border-primary focus:ring-0 transition-colors py-2 px-0 text-on-background placeholder:italic" placeholder="Add a new habit..." type="text"/>
+<span class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-outline-variant group-focus-within:text-primary transition-colors cursor-pointer" data-icon="add">add</span>
+</div>
+</div>
+<div class="p-6 bg-secondary-container/30 border border-outline-variant/10 rounded-xl">
+<p class="text-xs leading-relaxed text-secondary-dim font-medium italic">
+                                    "Precision is the hallmark of the archivist. Record each win, no matter how small."
+                                </p>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-8">
+<div class="space-y-3">
+<!-- Habit Item 1 -->
+<div class="group flex items-center justify-between p-5 bg-surface-container-highest rounded-lg transition-all hover:translate-x-1 duration-200">
+<div class="flex items-center gap-6">
+<div class="w-6 h-6 border-2 border-primary rounded-sm flex items-center justify-center cursor-pointer active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-primary text-lg scale-0 group-hover:scale-100 transition-transform" data-icon="check" data-weight="fill">check</span>
+</div>
+<span class="font-headline font-semibold text-lg text-on-background tracking-tight">Morning Visualization</span>
+</div>
+<span class="font-label text-[10px] uppercase tracking-widest text-outline-variant bg-surface-container-low px-2 py-1 rounded">06:00 AM</span>
+</div>
+<!-- Habit Item 2 - Offset Rule -->
+<div class="group flex items-center justify-between p-5 bg-surface-container-highest rounded-lg transition-all hover:translate-x-1 duration-200 ml-4 border-l-4 border-primary/20">
+<div class="flex items-center gap-6">
+<div class="w-6 h-6 border-2 border-primary rounded-sm flex items-center justify-center cursor-pointer active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-primary text-lg scale-0 group-hover:scale-100 transition-transform" data-icon="check" data-weight="fill">check</span>
+</div>
+<span class="font-headline font-semibold text-lg text-on-background tracking-tight">30m Deep Work Session</span>
+</div>
+<span class="font-label text-[10px] uppercase tracking-widest text-outline-variant bg-surface-container-low px-2 py-1 rounded">Focus</span>
+</div>
+<!-- Habit Item 3 (Completed) -->
+<div class="group flex items-center justify-between p-5 bg-secondary-container rounded-lg transition-all opacity-80">
+<div class="flex items-center gap-6">
+<div class="w-6 h-6 bg-primary rounded-sm flex items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined text-on-primary text-lg" data-icon="check" data-weight="fill">check</span>
+</div>
+<span class="font-headline font-semibold text-lg text-on-background tracking-tight line-through opacity-60 italic">Analog Journaling</span>
+</div>
+<span class="font-label text-[10px] uppercase tracking-widest text-primary font-bold">Done</span>
+</div>
+<!-- Habit Item 4 -->
+<div class="group flex items-center justify-between p-5 bg-surface-container-highest rounded-lg transition-all hover:translate-x-1 duration-200">
+<div class="flex items-center gap-6">
+<div class="w-6 h-6 border-2 border-primary rounded-sm flex items-center justify-center cursor-pointer active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-primary text-lg scale-0 group-hover:scale-100 transition-transform" data-icon="check" data-weight="fill">check</span>
+</div>
+<span class="font-headline font-semibold text-lg text-on-background tracking-tight">Vitamin Regimen</span>
+</div>
+<span class="font-label text-[10px] uppercase tracking-widest text-outline-variant bg-surface-container-low px-2 py-1 rounded">Health</span>
+</div>
+<!-- Habit Item 5 - Offset Rule -->
+<div class="group flex items-center justify-between p-5 bg-surface-container-highest rounded-lg transition-all hover:translate-x-1 duration-200 ml-2">
+<div class="flex items-center gap-6">
+<div class="w-6 h-6 border-2 border-primary rounded-sm flex items-center justify-center cursor-pointer active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-primary text-lg scale-0 group-hover:scale-100 transition-transform" data-icon="check" data-weight="fill">check</span>
+</div>
+<span class="font-headline font-semibold text-lg text-on-background tracking-tight">Cold Exposure</span>
+</div>
+<span class="font-label text-[10px] uppercase tracking-widest text-outline-variant bg-surface-container-low px-2 py-1 rounded">Recovery</span>
+</div>
+</div>
+<div class="mt-16 flex gap-6">
+<div class="flex-1 bg-surface-container-low p-8 rounded-2xl relative overflow-hidden group">
+<img class="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-20 transition-opacity" data-alt="Close-up of a vintage film camera with weathered leather casing and mechanical dials on a wooden table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBohLT1Iaq2t7IPGOGw32CgoQ-rYNjPA4kSBgHh_9BLSb_kk-p2SBs9Qc-m3F1yDqCRTfJJvqPKgEZJTVjAYNJb1NbDTyxjMeypc-29qjL9HhrkKqiDdFyPFTY1jnGoHhNfPUj5H14OxjT5X-mDn-NlGjmgOhk_z8a-PXxI_wW8pkqEqmnHGDsiLifKhC8Vyr3Pe75i9gowK1YhCui0MVW5lLhm-qlljk2Vj1-rYkE6r1CxJNFqu1f9_F8x7N1HxpFENsvI1ZMKDOs"/>
+<h4 class="font-label text-[0.6875rem] uppercase tracking-widest text-outline-variant mb-2">Current Streak</h4>
+<div class="flex items-baseline gap-2">
+<span class="font-headline text-5xl font-black text-primary tracking-tighter">14</span>
+<span class="font-label text-sm uppercase text-outline-variant">Days</span>
+</div>
+</div>
+<div class="flex-1 bg-primary p-8 rounded-2xl text-on-primary">
+<h4 class="font-label text-[0.6875rem] uppercase tracking-widest text-on-primary opacity-60 mb-2">Efficiency</h4>
+<div class="flex items-baseline gap-2">
+<span class="font-headline text-5xl font-black tracking-tighter">92</span>
+<span class="font-label text-sm uppercase opacity-60">%</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Mobile Navigation Shell -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface/80 backdrop-blur-md flex justify-around items-center py-4 px-6 z-50">
+<a class="text-primary flex flex-col items-center" href="#">
+<span class="material-symbols-outlined" data-icon="book_2">book_2</span>
+<span class="text-[10px] uppercase font-label mt-1">Journal</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="text-[10px] uppercase font-label mt-1">Archive</span>
+</a>
+<div class="-mt-12">
+<button class="bg-primary text-on-primary w-14 h-14 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-2xl" data-icon="add">add</span>
+</button>
+</div>
+<a class="text-on-surface-variant flex flex-col items-center" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="text-[10px] uppercase font-label mt-1">Insights</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px] uppercase font-label mt-1">Settings</span>
+</a>
+</nav>
+</body></html>

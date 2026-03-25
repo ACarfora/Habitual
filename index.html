@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habitual</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="film-grain"></div>
+
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <h1 class="logo">Habitual.</h1>
+            </div>
+            <nav class="nav">
+                <a href="#" class="nav-item active" data-view="journal">
+                    <span class="material-symbols-outlined">book_2</span>
+                    <span class="nav-label">Journal</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="new-entry-btn" id="new-entry-btn">New Entry</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Top bar -->
+            <header class="top-bar">
+                <h1 class="mobile-logo">Habitual.</h1>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                    <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
+                </button>
+            </header>
+
+            <!-- Section 1: Editorial Quote -->
+            <section class="quote-section">
+                <div class="quote-inner">
+                    <span class="quote-label" id="quote-label"></span>
+                    <h2 class="quote-text" id="quote-text"></h2>
+                    <p class="quote-author" id="quote-author"></p>
+                </div>
+            </section>
+
+            <!-- Section 2: Continuity Archive (Heatmap) -->
+            <section class="archive-section">
+                <div class="archive-header">
+                    <div>
+                        <h3 class="archive-title">Continuity Archive</h3>
+                        <p class="archive-subtitle">Yearly Exposure Grid</p>
+                    </div>
+                    <div class="archive-legend">
+                        <span class="legend-label">Less</span>
+                        <div class="legend-boxes">
+                            <div class="legend-box" data-level="0"></div>
+                            <div class="legend-box" data-level="1"></div>
+                            <div class="legend-box" data-level="2"></div>
+                            <div class="legend-box" data-level="3"></div>
+                        </div>
+                        <span class="legend-label">More</span>
+                    </div>
+                </div>
+                <div class="archive-card">
+                    <div class="archive-grid-wrap">
+                        <div class="archive-grid" id="activity-grid"></div>
+                        <div class="archive-months" id="archive-months"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Today's Tasks -->
+            <section class="today-section">
+                <div class="today-left">
+                    <div class="today-left-sticky">
+                        <h2 class="today-date" id="today-date"></h2>
+                        <p class="today-day-label" id="today-day-label"></p>
+
+                        <div class="input-group">
+                            <form class="input-row" id="add-habit-form">
+                                <input type="text" id="habit-input" class="habit-input" placeholder="Add a new habit..." maxlength="60" autocomplete="off">
+                                <button type="submit" class="input-add-btn" aria-label="Add habit">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="today-right">
+                    <ul class="habit-list" id="habit-list"></ul>
+
+                    <!-- Stat cards -->
+                    <div class="stat-cards">
+                        <div class="stat-card stat-card-streak">
+                            <h4 class="stat-label">Current Streak</h4>
+                            <div class="stat-value-row">
+                                <span class="stat-number" id="stat-streak">0</span>
+                                <span class="stat-unit">Days</span>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-card-efficiency">
+                            <h4 class="stat-label">Efficiency</h4>
+                            <div class="stat-value-row">
+                                <span class="stat-number" id="stat-efficiency">0</span>
+                                <span class="stat-unit">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Mobile FAB -->
+    <button class="mobile-fab" id="mobile-add-btn" aria-label="Add habit">
+        <span class="material-symbols-outlined">add</span>
+    </button>
+
+    <script src="js/quotes.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
