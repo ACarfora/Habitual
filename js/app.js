@@ -42,6 +42,7 @@
         setupMobileMenu();
         addForm.addEventListener('submit', onAddHabit);
 
+        Sync.checkUrlToken();
         Sync.pull(refreshAll);
 
         newEntryBtn.addEventListener('click', () => {

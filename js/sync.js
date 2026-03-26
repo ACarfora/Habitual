@@ -10,6 +10,15 @@ const Sync = (() => {
         localStorage.setItem(TOKEN_KEY, token);
     }
 
+    function checkUrlToken() {
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+        if (token) {
+            setToken(token);
+            window.history.replaceState({}, '', window.location.pathname);
+        }
+    }
+
     async function pull(onUpdate) {
         const token = getToken();
         if (!token) return;
@@ -53,5 +62,5 @@ const Sync = (() => {
         }
     }
 
-    return { pull, push, getToken, setToken };
+    return { pull, push, getToken, setToken, checkUrlToken };
 })();
