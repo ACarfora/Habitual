@@ -1,0 +1,57 @@
+const Sync = (() => {
+    const API_URL = 'https://habitual-sync.alessio-carfora.workers.dev';
+    const TOKEN_KEY = 'habitual_sync_token';
+
+    function getToken() {
+        return localStorage.getItem(TOKEN_KEY) || '';
+    }
+
+    function setToken(token) {
+        localStorage.setItem(TOKEN_KEY, token);
+    }
+
+    async function pull(onUpdate) {
+        const token = getToken();
+        if (!token) return;
+
+        try {
+            const res = await fetch(API_URL, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${token}` },
+            });
+            if (!res.ok) return;
+
+            const remote = await res.json();
+            if (!remote.lastModified) return;
+
+            const local = Storage.exportAll();
+            if (remote.lastModified > local.lastModified) {
+                Storage.importAll(remote);
+                if (onUpdate) onUpdate();
+            }
+        } catch (e) {
+            // Offline or unreachable — localStorage continues to work
+        }
+    }
+
+    async function push() {
+        const token = getToken();
+        if (!token) return;
+
+        try {
+            const data = Storage.exportAll();
+            await fetch(API_URL, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+        } catch (e) {
+            // Offline or unreachable — will sync on next successful push
+        }
+    }
+
+    return { pull, push, getToken, setToken };
+})();

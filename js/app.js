@@ -21,6 +21,13 @@
     let currentView = 'journal';
     let pendingDeleteId = null;
 
+    function refreshAll() {
+        renderActivityGrid();
+        renderHabits();
+        updateStats();
+        if (currentView === 'archive') renderArchivedList();
+    }
+
     function init() {
         Storage.pruneOldData();
         initTheme();
@@ -34,6 +41,8 @@
 
         setupMobileMenu();
         addForm.addEventListener('submit', onAddHabit);
+
+        Sync.pull(refreshAll);
 
         newEntryBtn.addEventListener('click', () => {
             if (currentView !== 'journal') switchView('journal');
@@ -347,6 +356,7 @@
                     habits.splice(toIdx, 0, moved);
                     Storage.saveHabits(habits);
                     renderHabits();
+                    Sync.push();
                 }
             }
         });
@@ -407,6 +417,7 @@
                 renderHabits();
                 updateStats();
                 renderActivityGrid();
+                Sync.push();
             });
 
             // Delete button
@@ -443,6 +454,7 @@
                 deleteModal.classList.add('hidden');
                 renderArchivedList();
                 renderActivityGrid();
+                Sync.push();
             }
         });
 
@@ -489,6 +501,7 @@
         renderHabits();
         updateStats();
         renderActivityGrid();
+        Sync.push();
     }
 
     function onAddHabit(e) {
@@ -509,6 +522,7 @@
         renderHabits();
         updateStats();
         renderActivityGrid();
+        Sync.push();
     }
 
     function onArchiveHabit(habitId) {
@@ -516,6 +530,7 @@
         renderHabits();
         updateStats();
         renderActivityGrid();
+        Sync.push();
     }
 
     document.addEventListener('DOMContentLoaded', init);

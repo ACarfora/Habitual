@@ -176,6 +176,23 @@ const Storage = (() => {
         saveArchivedHabits(archived);
     }
 
+    // --- Sync ---
+
+    function exportAll() {
+        return {
+            habits: loadHabits(),
+            completions: loadCompletions(),
+            archived: loadArchivedHabits(),
+            lastModified: Date.now(),
+        };
+    }
+
+    function importAll(data) {
+        if (data.habits) saveHabits(data.habits);
+        if (data.completions) saveCompletions(data.completions);
+        if (data.archived) saveArchivedHabits(data.archived);
+    }
+
     return {
         getTodayKey,
         loadHabits,
@@ -189,5 +206,7 @@ const Storage = (() => {
         archiveHabit,
         restoreHabit,
         permanentlyDeleteHabit,
+        exportAll,
+        importAll,
     };
 })();
