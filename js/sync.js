@@ -21,25 +21,28 @@ const Sync = (() => {
 
     async function pull(onUpdate) {
         const token = getToken();
-        if (!token) return;
+        if (!token) { alert('Sync: no token found'); return; }
 
         try {
             const res = await fetch(API_URL, {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${token}` },
             });
-            if (!res.ok) return;
+            if (!res.ok) { alert('Sync: fetch failed, status ' + res.status); return; }
 
             const remote = await res.json();
-            if (!remote.lastModified) return;
+            if (!remote.lastModified) { alert('Sync: no lastModified in remote'); return; }
 
             const local = Storage.exportAll();
             if (remote.lastModified > local.lastModified) {
                 Storage.importAll(remote);
                 if (onUpdate) onUpdate();
+                alert('Sync: pulled and updated');
+            } else {
+                alert('Sync: local is newer or equal');
             }
         } catch (e) {
-            // Offline or unreachable — localStorage continues to work
+            alert('Sync: error — ' + e.message);
         }
     }
 
