@@ -33,8 +33,8 @@ const Sync = (() => {
             const remote = await res.json();
             if (!remote.lastModified) { alert('Sync: no lastModified in remote'); return; }
 
-            const local = Storage.exportAll();
-            if (remote.lastModified > local.lastModified) {
+            const localModified = Storage.getLastModified();
+            if (remote.lastModified > localModified) {
                 Storage.importAll(remote);
                 if (onUpdate) onUpdate();
                 alert('Sync: pulled and updated');

@@ -178,12 +178,24 @@ const Storage = (() => {
 
     // --- Sync ---
 
+    const LAST_MODIFIED_KEY = 'habitual_last_modified';
+
+    function getLastModified() {
+        return parseInt(localStorage.getItem(LAST_MODIFIED_KEY), 10) || 0;
+    }
+
+    function touchLastModified() {
+        const now = Date.now();
+        localStorage.setItem(LAST_MODIFIED_KEY, now);
+        return now;
+    }
+
     function exportAll() {
         return {
             habits: loadHabits(),
             completions: loadCompletions(),
             archived: loadArchivedHabits(),
-            lastModified: Date.now(),
+            lastModified: touchLastModified(),
         };
     }
 
@@ -191,6 +203,7 @@ const Storage = (() => {
         if (data.habits) saveHabits(data.habits);
         if (data.completions) saveCompletions(data.completions);
         if (data.archived) saveArchivedHabits(data.archived);
+        if (data.lastModified) localStorage.setItem(LAST_MODIFIED_KEY, data.lastModified);
     }
 
     return {
@@ -206,6 +219,7 @@ const Storage = (() => {
         archiveHabit,
         restoreHabit,
         permanentlyDeleteHabit,
+        getLastModified,
         exportAll,
         importAll,
     };
