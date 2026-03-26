@@ -12,8 +12,6 @@ const STATIC_ASSETS = [
     '/assets/favicon-dark.svg',
     '/assets/icon-light-192.png',
     '/assets/icon-light-512.png',
-    '/assets/icon-dark-192.png',
-    '/assets/icon-dark-512.png',
 ];
 
 self.addEventListener('install', (e) => {
