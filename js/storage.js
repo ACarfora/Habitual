@@ -195,7 +195,7 @@ const Storage = (() => {
             habits: loadHabits(),
             completions: loadCompletions(),
             archived: loadArchivedHabits(),
-            lastModified: touchLastModified(),
+            lastModified: getLastModified(),
         };
     }
 
@@ -220,6 +220,7 @@ const Storage = (() => {
         restoreHabit,
         permanentlyDeleteHabit,
         getLastModified,
+        touchLastModified,
         exportAll,
         importAll,
     };

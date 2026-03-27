@@ -28,6 +28,19 @@
         if (currentView === 'archive') renderArchivedList();
     }
 
+    function afterMutation() {
+        refreshAll();
+        Sync.push();
+    }
+
+    function focusHabitInput() {
+        if (currentView !== 'journal') switchView('journal');
+        setTimeout(() => {
+            habitInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => habitInput.focus(), 400);
+        }, currentView !== 'journal' ? 100 : 0);
+    }
+
     function init() {
         Storage.pruneOldData();
         initTheme();
@@ -45,21 +58,8 @@
         Sync.checkUrlToken();
         Sync.pull(refreshAll);
 
-        newEntryBtn.addEventListener('click', () => {
-            if (currentView !== 'journal') switchView('journal');
-            setTimeout(() => {
-                habitInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                setTimeout(() => habitInput.focus(), 400);
-            }, currentView !== 'journal' ? 100 : 0);
-        });
-
-        mobileAddBtn.addEventListener('click', () => {
-            if (currentView !== 'journal') switchView('journal');
-            setTimeout(() => {
-                habitInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                setTimeout(() => habitInput.focus(), 400);
-            }, currentView !== 'journal' ? 100 : 0);
-        });
+        newEntryBtn.addEventListener('click', focusHabitInput);
+        mobileAddBtn.addEventListener('click', focusHabitInput);
     }
 
     // --- Theme ---
@@ -356,8 +356,7 @@
                     const [moved] = habits.splice(fromIdx, 1);
                     habits.splice(toIdx, 0, moved);
                     Storage.saveHabits(habits);
-                    renderHabits();
-                    Sync.push();
+                    afterMutation();
                 }
             }
         });
@@ -414,11 +413,7 @@
             restoreBtn.innerHTML = '<span class="material-symbols-outlined">unarchive</span>';
             restoreBtn.addEventListener('click', () => {
                 Storage.restoreHabit(habit.id);
-                renderArchivedList();
-                renderHabits();
-                updateStats();
-                renderActivityGrid();
-                Sync.push();
+                afterMutation();
             });
 
             // Delete button
@@ -453,9 +448,7 @@
                 Storage.permanentlyDeleteHabit(pendingDeleteId);
                 pendingDeleteId = null;
                 deleteModal.classList.add('hidden');
-                renderArchivedList();
-                renderActivityGrid();
-                Sync.push();
+                afterMutation();
             }
         });
 
@@ -499,10 +492,7 @@
 
     function onToggleHabit(habitId) {
         Storage.toggleCompletion(habitId);
-        renderHabits();
-        updateStats();
-        renderActivityGrid();
-        Sync.push();
+        afterMutation();
     }
 
     function onAddHabit(e) {
@@ -520,18 +510,12 @@
         Storage.saveHabits(habits);
 
         habitInput.value = '';
-        renderHabits();
-        updateStats();
-        renderActivityGrid();
-        Sync.push();
+        afterMutation();
     }
 
     function onArchiveHabit(habitId) {
         Storage.archiveHabit(habitId);
-        renderHabits();
-        updateStats();
-        renderActivityGrid();
-        Sync.push();
+        afterMutation();
     }
 
     document.addEventListener('DOMContentLoaded', init);

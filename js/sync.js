@@ -43,11 +43,19 @@ const Sync = (() => {
         }
     }
 
-    async function push() {
+    let pushTimer = null;
+
+    function push() {
+        clearTimeout(pushTimer);
+        pushTimer = setTimeout(doPush, 500);
+    }
+
+    async function doPush() {
         const token = getToken();
         if (!token) return;
 
         try {
+            Storage.touchLastModified();
             const data = Storage.exportAll();
             await fetch(API_URL, {
                 method: 'PUT',

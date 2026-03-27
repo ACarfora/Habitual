@@ -34,17 +34,25 @@ export default {
             return unauthorized(request);
         }
 
-        if (request.method === 'GET') {
-            const data = await env.HABITUAL_KV.get(KV_KEY, 'text');
-            return new Response(data || '{}', {
-                headers: { 'Content-Type': 'application/json', ...corsHeaders(request) },
-            });
-        }
+        try {
+            if (request.method === 'GET') {
+                const data = await env.HABITUAL_KV.get(KV_KEY, 'text');
+                return new Response(data || '{}', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-store',
+                        ...corsHeaders(request),
+                    },
+                });
+            }
 
-        if (request.method === 'PUT') {
-            const body = await request.text();
-            await env.HABITUAL_KV.put(KV_KEY, body);
-            return new Response('OK', { status: 200, headers: corsHeaders(request) });
+            if (request.method === 'PUT') {
+                const body = await request.text();
+                await env.HABITUAL_KV.put(KV_KEY, body);
+                return new Response('OK', { status: 200, headers: corsHeaders(request) });
+            }
+        } catch (e) {
+            return new Response('Internal error', { status: 500, headers: corsHeaders(request) });
         }
 
         return new Response('Method not allowed', { status: 405, headers: corsHeaders(request) });

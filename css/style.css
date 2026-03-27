@@ -31,6 +31,9 @@
     --outline: #7a7c73;
     --outline-variant: #b1b3a9;
     --inverse-surface: #0e0e0c;
+    --error: #b44;
+    --error-hover: #c55;
+    --on-error: #fff;
     --font-headline: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 }
@@ -64,6 +67,9 @@ body.dark {
     --outline: #8d8f86;
     --outline-variant: #5e6057;
     --inverse-surface: #e2e3d8;
+    --error: #cf6679;
+    --error-hover: #e07a8e;
+    --on-error: #1a1a18;
     --header-blur: rgba(17, 17, 16, 0.8);
 }
 
@@ -541,7 +547,7 @@ body {
 .today-date {
     font-family: var(--font-headline);
     font-size: 3.5rem;
-    font-weight: 900;
+    font-weight: 800;
     color: var(--on-background);
     letter-spacing: -0.04em;
     margin-bottom: 4px;
@@ -822,7 +828,7 @@ body {
 .stat-number {
     font-family: var(--font-headline);
     font-size: 3rem;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: -0.04em;
 }
 
@@ -1054,8 +1060,8 @@ body {
 }
 
 .archived-btn-delete:hover {
-    color: #b44;
-    border-color: #b44;
+    color: var(--error);
+    border-color: var(--error);
 }
 
 .archived-btn .material-symbols-outlined {
@@ -1140,12 +1146,12 @@ body {
 }
 
 .modal-btn-confirm {
-    background: #b44;
-    color: #fff;
+    background: var(--error);
+    color: var(--on-error);
 }
 
 .modal-btn-confirm:hover {
-    background: #c55;
+    background: var(--error-hover);
 }
 
 /* Dark mode grain boost */
