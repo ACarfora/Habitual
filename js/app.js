@@ -16,10 +16,16 @@
     const deleteModal = document.getElementById('delete-modal');
     const modalCancel = document.getElementById('modal-cancel');
     const modalConfirm = document.getElementById('modal-confirm');
+    const archiveSection = document.querySelector('.archive-section');
+    const archiveSubtitle = document.getElementById('archive-subtitle');
+    const archiveToggleBtns = document.querySelectorAll('.archive-toggle-btn');
+
+    const ARCHIVE_MODE_KEY = 'habitual_archive_mode';
 
     let draggedItem = null;
     let currentView = 'journal';
     let pendingDeleteId = null;
+    let archiveMode = localStorage.getItem(ARCHIVE_MODE_KEY) || 'year';
 
     function refreshAll() {
         renderActivityGrid();
@@ -46,6 +52,7 @@
         initTheme();
         renderDate();
         renderQuote();
+        setupArchiveToggle();
         renderActivityGrid();
         renderHabits();
         updateStats();
@@ -170,21 +177,32 @@
 
     function renderActivityGrid() {
         activityGrid.innerHTML = '';
+        const monthsEl = document.getElementById('archive-months');
+        monthsEl.innerHTML = '';
 
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const todayDay = today.getDay();
 
-        const endDate = new Date(today);
-        endDate.setDate(endDate.getDate() + (6 - todayDay));
+        let totalDays, startDow;
+        const isMonthMode = archiveMode === 'month';
 
-        const startDate = new Date(endDate);
-        startDate.setDate(startDate.getDate() - (53 * 7) + 1);
+        if (isMonthMode) {
+            // 5 week-columns ending today, anchored so data[0] lands on a Sunday.
+            // Range: 29 days (today is Sunday) to 35 days (today is Saturday).
+            totalDays = 29 + todayDay;
+            startDow = 0;
+        } else {
+            const endDate = new Date(today);
+            endDate.setDate(endDate.getDate() + (6 - todayDay));
+            const startDate = new Date(endDate);
+            startDate.setDate(startDate.getDate() - (53 * 7) + 1);
+            totalDays = Math.round((endDate - startDate) / 86400000) + 1;
+            startDow = startDate.getDay();
+        }
 
-        const totalDays = Math.round((endDate - startDate) / 86400000) + 1;
         const data = Storage.getActivityData(totalDays);
 
-        const startDow = startDate.getDay();
         for (let i = 0; i < startDow; i++) {
             const empty = document.createElement('div');
             empty.className = 'activity-cell';
@@ -228,10 +246,9 @@
             activityGrid.appendChild(cell);
         });
 
-        const monthsEl = document.getElementById('archive-months');
-        monthsEl.innerHTML = '';
-        monthsEl.style.position = 'relative';
+        if (isMonthMode) return;
 
+        monthsEl.style.position = 'relative';
         const entries = Object.values(monthColumns);
         let lastPct = -10;
         entries.forEach(entry => {
@@ -244,6 +261,27 @@
             span.style.position = 'absolute';
             span.style.left = pct + '%';
             monthsEl.appendChild(span);
+        });
+    }
+
+    function applyArchiveMode() {
+        archiveSection.dataset.mode = archiveMode;
+        archiveSubtitle.textContent = archiveMode === 'month' ? 'Monthly Exposure Grid' : 'Yearly Exposure Grid';
+        archiveToggleBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.mode === archiveMode);
+        });
+    }
+
+    function setupArchiveToggle() {
+        applyArchiveMode();
+        archiveToggleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.dataset.mode === archiveMode) return;
+                archiveMode = btn.dataset.mode;
+                localStorage.setItem(ARCHIVE_MODE_KEY, archiveMode);
+                applyArchiveMode();
+                renderActivityGrid();
+            });
         });
     }
 

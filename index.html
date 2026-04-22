@@ -66,21 +66,27 @@
             </section>
 
             <!-- Section 2: Continuity Archive (Heatmap) -->
-            <section class="archive-section">
+            <section class="archive-section" data-mode="year">
                 <div class="archive-header">
                     <div>
                         <h3 class="archive-title">Continuity Archive</h3>
-                        <p class="archive-subtitle">Yearly Exposure Grid</p>
+                        <p class="archive-subtitle" id="archive-subtitle">Yearly Exposure Grid</p>
                     </div>
-                    <div class="archive-legend">
-                        <span class="legend-label">Less</span>
-                        <div class="legend-boxes">
-                            <div class="legend-box" data-level="0"></div>
-                            <div class="legend-box" data-level="1"></div>
-                            <div class="legend-box" data-level="2"></div>
-                            <div class="legend-box" data-level="3"></div>
+                    <div class="archive-header-right">
+                        <div class="archive-toggle" role="group" aria-label="Activity range">
+                            <button type="button" class="archive-toggle-btn active" data-mode="year">Year</button>
+                            <button type="button" class="archive-toggle-btn" data-mode="month">Month</button>
                         </div>
-                        <span class="legend-label">More</span>
+                        <div class="archive-legend">
+                            <span class="legend-label">Less</span>
+                            <div class="legend-boxes">
+                                <div class="legend-box" data-level="0"></div>
+                                <div class="legend-box" data-level="1"></div>
+                                <div class="legend-box" data-level="2"></div>
+                                <div class="legend-box" data-level="3"></div>
+                            </div>
+                            <span class="legend-label">More</span>
+                        </div>
                     </div>
                 </div>
                 <div class="archive-card">
