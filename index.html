@@ -32,6 +32,10 @@
                     <span class="material-symbols-outlined">inventory_2</span>
                     <span class="nav-label">Vault</span>
                 </a>
+                <a href="#" class="nav-item" data-view="training">
+                    <span class="material-symbols-outlined">exercise</span>
+                    <span class="nav-label">Training</span>
+                </a>
             </nav>
             <div class="sidebar-footer">
                 <button class="new-entry-btn" id="new-entry-btn">New Entry</button>
@@ -56,6 +60,8 @@
             <!-- Mobile sidebar overlay -->
             <div class="mobile-sidebar-backdrop hidden" id="mobile-sidebar-backdrop"></div>
 
+            <!-- Journal View -->
+            <div id="view-journal">
             <!-- Section 1: Editorial Quote -->
             <section class="quote-section">
                 <div class="quote-inner">
@@ -137,11 +143,134 @@
                     </div>
                 </div>
             </section>
+            </div><!-- /#view-journal -->
+
             <!-- Archive View -->
             <section class="archive-view hidden" id="view-archive">
                 <h2 class="section-title">The Vault</h2>
                 <p class="archive-view-desc">Habits here are paused. Restore them to your journal or remove permanently.</p>
                 <ul class="archived-list" id="archived-list"></ul>
+            </section>
+
+            <!-- Training View -->
+            <section class="training-view hidden" id="view-training">
+                <!-- Lock screen -->
+                <div class="training-lock" id="training-lock">
+                    <div class="training-lock-inner">
+                        <span class="material-symbols-outlined training-lock-icon">lock</span>
+                        <p class="training-lock-label">Restricted</p>
+                        <h2 class="training-lock-title">Training</h2>
+                        <p class="training-lock-subtitle">Enter passcode to continue</p>
+                        <form class="training-lock-form" id="training-lock-form" autocomplete="off">
+                            <input type="password" id="training-lock-input" class="training-lock-input" placeholder="Passcode" autocomplete="off">
+                            <button type="submit" class="training-lock-btn">Unlock</button>
+                        </form>
+                        <p class="training-lock-error hidden" id="training-lock-error">Incorrect passcode</p>
+                    </div>
+                </div>
+
+                <!-- Unlocked content -->
+                <div class="training-content hidden" id="training-content">
+
+                    <!-- Empty state (no blocks) -->
+                    <div class="training-empty hidden" id="training-empty">
+                        <span class="quote-label">Block 000 // Awaiting Programme</span>
+                        <h2 class="training-empty-title">Begin a Training Block</h2>
+                        <p class="training-empty-desc">Define a cyclic routine &mdash; pick the number of days, set a title and notes for each one, then work through the cycle. When the last day is ticked, the block resets.</p>
+                        <button class="new-entry-btn training-empty-cta" id="training-empty-create">Create First Block</button>
+                    </div>
+
+                    <!-- Active block view -->
+                    <div class="training-block-view hidden" id="training-block-view">
+
+                        <!-- Header / block selector -->
+                        <header class="training-header">
+                            <div class="training-header-left">
+                                <span class="quote-label" id="training-header-label">Active Block</span>
+                                <h2 class="training-block-name" id="training-block-name"></h2>
+                                <div class="training-block-pills" id="training-block-pills"></div>
+                            </div>
+                            <div class="training-header-right">
+                                <button class="training-action-btn" id="training-new-btn" aria-label="Create new block">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                                <button class="training-action-btn" id="training-edit-btn" aria-label="Edit current block">
+                                    <span class="material-symbols-outlined">edit</span>
+                                </button>
+                                <button class="training-action-btn training-action-btn-danger" id="training-delete-btn" aria-label="Delete current block">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </div>
+                        </header>
+
+                        <!-- Progress -->
+                        <section class="training-progress">
+                            <div class="training-progress-row">
+                                <span class="training-progress-cycle" id="training-cycle-label"></span>
+                                <span class="training-progress-day" id="training-progress-day"></span>
+                            </div>
+                            <div class="training-progress-bar">
+                                <div class="training-progress-fill" id="training-progress-fill"></div>
+                            </div>
+                        </section>
+
+                        <!-- Stats -->
+                        <div class="stat-cards training-stat-cards">
+                            <div class="stat-card stat-card-streak">
+                                <h4 class="stat-label">Current Streak</h4>
+                                <div class="stat-value-row">
+                                    <span class="stat-number" id="training-streak">0</span>
+                                    <span class="stat-unit">Days</span>
+                                </div>
+                            </div>
+                            <div class="stat-card stat-card-cycles">
+                                <h4 class="stat-label">Cycles Completed</h4>
+                                <div class="stat-value-row">
+                                    <span class="stat-number" id="training-cycles">0</span>
+                                    <span class="stat-unit">Cycles</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Training Calendar (heatmap) -->
+                        <section class="training-heatmap-section" data-mode="month">
+                            <div class="archive-header">
+                                <div>
+                                    <h3 class="archive-title">Training Calendar</h3>
+                                    <p class="archive-subtitle" id="training-heatmap-subtitle">Monthly Training Grid</p>
+                                </div>
+                                <div class="archive-header-right">
+                                    <div class="archive-toggle" role="group" aria-label="Training range">
+                                        <button type="button" class="archive-toggle-btn" data-tmode="year">Year</button>
+                                        <button type="button" class="archive-toggle-btn active" data-tmode="month">Month</button>
+                                    </div>
+                                    <div class="archive-legend">
+                                        <span class="legend-label">Less</span>
+                                        <div class="legend-boxes">
+                                            <div class="legend-box" data-level="0"></div>
+                                            <div class="legend-box" data-level="1"></div>
+                                            <div class="legend-box" data-level="2"></div>
+                                            <div class="legend-box" data-level="3"></div>
+                                        </div>
+                                        <span class="legend-label">More</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="archive-card">
+                                <div class="archive-grid-wrap">
+                                    <div class="archive-grid" id="training-heatmap-grid"></div>
+                                    <div class="archive-months" id="training-heatmap-months"></div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Day list -->
+                        <section class="training-days-section">
+                            <h3 class="archive-title training-days-title">Training Block</h3>
+                            <ul class="training-day-list" id="training-day-list"></ul>
+                        </section>
+                    </div>
+                </div>
             </section>
         </main>
     </div>
@@ -155,6 +284,49 @@
                 <button class="modal-btn modal-btn-cancel" id="modal-cancel">Cancel</button>
                 <button class="modal-btn modal-btn-confirm" id="modal-confirm">Delete</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Block create/edit modal -->
+    <div class="modal-backdrop hidden" id="block-modal">
+        <div class="modal modal-block">
+            <h3 class="modal-title" id="block-modal-title">New Block</h3>
+            <form id="block-form" class="block-form" autocomplete="off">
+                <label class="block-field">
+                    <span class="block-field-label">Block Name</span>
+                    <input type="text" id="block-name-input" class="block-field-input" maxlength="40" placeholder="e.g. Strength Cycle" required>
+                </label>
+                <label class="block-field">
+                    <span class="block-field-label">Number of Days</span>
+                    <input type="number" id="block-days-count" class="block-field-input" min="1" max="30" value="3" required>
+                </label>
+                <div class="block-days-list" id="block-days-list"></div>
+                <div class="modal-actions">
+                    <button type="button" class="modal-btn modal-btn-cancel" id="block-modal-cancel">Cancel</button>
+                    <button type="submit" class="modal-btn modal-btn-save">Save Block</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Block delete confirmation modal -->
+    <div class="modal-backdrop hidden" id="block-delete-modal">
+        <div class="modal">
+            <h3 class="modal-title">Delete this block?</h3>
+            <p class="modal-body">The block and its current cycle progress will be removed. Training history (streak, cycles) remains.</p>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="block-delete-cancel">Cancel</button>
+                <button class="modal-btn modal-btn-confirm" id="block-delete-confirm">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cycle complete celebration -->
+    <div class="cycle-complete-overlay hidden" id="cycle-complete-overlay">
+        <div class="cycle-complete-card">
+            <span class="material-symbols-outlined cycle-complete-icon">military_tech</span>
+            <p class="quote-label" id="cycle-complete-label">Cycle Complete</p>
+            <h3 class="cycle-complete-title" id="cycle-complete-title">Reset for next round</h3>
         </div>
     </div>
 

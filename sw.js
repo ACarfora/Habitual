@@ -1,5 +1,5 @@
 // Bump this version on every deploy to invalidate the cache
-const CACHE_VERSION = 3;
+const CACHE_VERSION = 4;
 const CACHE_NAME = `habitual-v${CACHE_VERSION}`;
 const STATIC_ASSETS = [
     '/',

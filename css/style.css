@@ -1219,3 +1219,748 @@ body.dark .film-grain {
     opacity: 0.06;
     mix-blend-mode: overlay;
 }
+
+/* ===================================
+   Training View — Lock Screen
+   =================================== */
+
+.training-lock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    padding: 48px 24px;
+}
+
+.training-lock-inner {
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+    background: var(--surface-container-low);
+    border-radius: 12px;
+    padding: 48px 32px;
+    transition: background-color 0.7s ease;
+}
+
+.training-lock-icon {
+    display: inline-block;
+    color: var(--primary);
+    font-size: 2rem !important;
+    margin-bottom: 16px;
+    transition: color 0.7s ease;
+}
+
+.training-lock-label {
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--outline-variant);
+    margin-bottom: 12px;
+}
+
+.training-lock-title {
+    font-family: var(--font-headline);
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--on-background);
+    margin-bottom: 8px;
+    transition: color 0.7s ease;
+}
+
+.training-lock-subtitle {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: var(--on-surface-variant);
+    font-style: italic;
+    opacity: 0.85;
+    margin-bottom: 32px;
+}
+
+.training-lock-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.training-lock-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--surface-variant);
+    padding: 10px 0;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--on-background);
+    text-align: center;
+    outline: none;
+    letter-spacing: 0.3em;
+    transition: border-color 0.2s ease, color 0.7s ease;
+}
+
+.training-lock-input::placeholder {
+    color: var(--outline-variant);
+    letter-spacing: 0.2em;
+    font-style: italic;
+    font-weight: 300;
+}
+
+.training-lock-input:focus {
+    border-bottom-color: var(--primary);
+}
+
+.training-lock-btn {
+    width: 100%;
+    background: var(--primary);
+    color: var(--on-primary);
+    border: none;
+    padding: 14px;
+    border-radius: 6px;
+    font-family: var(--font-headline);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.7s ease, color 0.7s ease;
+}
+
+.training-lock-btn:active {
+    transform: scale(0.97);
+}
+
+.training-lock-error {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    color: var(--error);
+    margin-top: 4px;
+}
+
+.training-lock.shake .training-lock-inner {
+    animation: lockShake 0.35s ease-in-out;
+}
+
+@keyframes lockShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+
+/* ===================================
+   Training View — Empty State
+   =================================== */
+
+.training-empty {
+    max-width: 560px;
+    padding: 48px 0;
+}
+
+.training-empty .quote-label {
+    margin-bottom: 24px;
+}
+
+.training-empty-title {
+    font-family: var(--font-headline);
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--on-background);
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+    transition: color 0.7s ease;
+}
+
+.training-empty-desc {
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    color: var(--on-surface-variant);
+    line-height: 1.7;
+    margin-bottom: 32px;
+}
+
+.training-empty-cta {
+    width: auto;
+    padding: 14px 32px;
+}
+
+/* ===================================
+   Training View — Header
+   =================================== */
+
+.training-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+}
+
+.training-header-left {
+    flex: 1;
+    min-width: 0;
+}
+
+.training-header-left .quote-label {
+    margin-bottom: 12px;
+}
+
+.training-block-name {
+    font-family: var(--font-headline);
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--on-background);
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    line-height: 1.1;
+    transition: color 0.7s ease;
+}
+
+.training-block-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.training-block-pill {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--surface-container);
+    border: none;
+    color: var(--on-surface-variant);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: background-color 0.7s ease, color 0.7s ease;
+}
+
+.training-block-pill.active {
+    background: var(--primary);
+    color: var(--on-primary);
+    font-weight: 700;
+}
+
+@media (hover: hover) {
+    .training-block-pill:not(.active):hover {
+        background: var(--surface-container-high);
+        color: var(--on-background);
+    }
+}
+
+.training-header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.training-action-btn {
+    background: none;
+    border: 1px solid var(--surface-variant);
+    border-radius: 8px;
+    color: var(--on-surface-variant);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.7s ease;
+}
+
+.training-action-btn:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.training-action-btn-danger:hover {
+    color: var(--error);
+    border-color: var(--error);
+}
+
+.training-action-btn .material-symbols-outlined {
+    font-size: 1.125rem;
+}
+
+/* ===================================
+   Training View — Progress
+   =================================== */
+
+.training-progress {
+    margin-bottom: 48px;
+    padding: 24px 28px;
+    background: var(--surface-container-low);
+    border-radius: 12px;
+    transition: background-color 0.7s ease;
+}
+
+.training-progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+    gap: 16px;
+}
+
+.training-progress-cycle {
+    font-family: var(--font-headline);
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--on-background);
+    transition: color 0.7s ease;
+}
+
+.training-progress-day {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--outline-variant);
+}
+
+.training-progress-bar {
+    height: 6px;
+    background: var(--surface-container-high);
+    border-radius: 999px;
+    overflow: hidden;
+    transition: background-color 0.7s ease;
+}
+
+.training-progress-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 999px;
+    width: 0%;
+    transition: width 0.4s ease, background-color 0.7s ease;
+}
+
+/* ===================================
+   Training View — Stats
+   =================================== */
+
+.training-stat-cards {
+    margin-top: 0;
+    margin-bottom: 64px;
+}
+
+.stat-card-cycles {
+    background: var(--primary);
+    color: var(--on-primary);
+}
+
+.stat-card-cycles .stat-label {
+    color: var(--on-primary);
+    opacity: 0.6;
+}
+
+.stat-card-cycles .stat-unit {
+    opacity: 0.6;
+}
+
+/* ===================================
+   Training View — Heatmap
+   =================================== */
+
+.training-heatmap-section {
+    margin-bottom: 64px;
+}
+
+.training-heatmap-section[data-mode="month"] .archive-grid-wrap {
+    min-width: 0;
+}
+
+.training-heatmap-section[data-mode="month"] .archive-grid {
+    grid-template-rows: repeat(7, 14px);
+    grid-auto-columns: 14px;
+    justify-content: start;
+}
+
+.training-heatmap-section[data-mode="month"] .archive-months {
+    display: none;
+}
+
+/* ===================================
+   Training View — Day List
+   =================================== */
+
+.training-days-section {
+    margin-bottom: 64px;
+}
+
+.training-days-title {
+    margin-bottom: 24px;
+}
+
+.training-day-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.training-day-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    background: var(--surface-container-highest);
+    border-radius: 8px;
+    transition: transform 0.2s ease, background-color 0.7s ease;
+    user-select: none;
+}
+
+.training-day-item.completed {
+    background: var(--secondary-container);
+    opacity: 0.85;
+}
+
+.training-day-check {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--primary);
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease, background-color 0.7s ease, border-color 0.7s ease, color 0.7s ease;
+    padding: 0;
+    color: var(--primary);
+    margin-top: 2px;
+}
+
+.training-day-check .material-symbols-outlined {
+    font-size: 1.125rem;
+    transform: scale(0);
+    transition: transform 0.15s ease;
+}
+
+.training-day-check:active {
+    transform: scale(0.9);
+}
+
+.training-day-item.completed .training-day-check {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--on-primary);
+}
+
+.training-day-item.completed .training-day-check .material-symbols-outlined {
+    transform: scale(1);
+}
+
+.training-day-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.training-day-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.training-day-badge {
+    font-family: var(--font-body);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: var(--surface-container-low);
+    color: var(--outline-variant);
+    flex-shrink: 0;
+    transition: background-color 0.7s ease, color 0.7s ease;
+}
+
+.training-day-item.completed .training-day-badge {
+    background: var(--surface-container);
+    color: var(--primary);
+}
+
+.training-day-title {
+    font-family: var(--font-headline);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--on-background);
+    letter-spacing: -0.01em;
+    transition: color 0.7s ease;
+}
+
+.training-day-item.completed .training-day-title {
+    text-decoration: line-through;
+    opacity: 0.6;
+    font-style: italic;
+}
+
+.training-day-notes {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: var(--on-surface-variant);
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.training-day-item.completed .training-day-notes {
+    opacity: 0.6;
+}
+
+@media (hover: hover) {
+    .training-day-item:hover {
+        transform: translateX(4px);
+    }
+    .training-day-item.completed:hover {
+        transform: none;
+    }
+    .training-day-item:hover .training-day-check .material-symbols-outlined {
+        transform: scale(1);
+    }
+}
+
+/* ===================================
+   Block Create/Edit Modal
+   =================================== */
+
+.modal-block {
+    max-width: 520px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.block-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.block-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.block-field-label {
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--outline-variant);
+}
+
+.block-field-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--surface-variant);
+    padding: 8px 0;
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    color: var(--on-background);
+    outline: none;
+    transition: border-color 0.2s ease, color 0.7s ease;
+}
+
+.block-field-input:focus {
+    border-bottom-color: var(--primary);
+}
+
+.block-days-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    padding-right: 6px;
+    flex: 1;
+    min-height: 0;
+    margin: 0 -6px 0 0;
+}
+
+.block-day-field {
+    background: var(--surface-container-low);
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: background-color 0.7s ease;
+}
+
+.block-day-field-header {
+    font-family: var(--font-body);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: var(--primary);
+    font-weight: 700;
+    transition: color 0.7s ease;
+}
+
+.block-day-title {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--surface-variant);
+    padding: 6px 0;
+    font-family: var(--font-headline);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--on-background);
+    outline: none;
+    transition: border-color 0.2s ease, color 0.7s ease;
+}
+
+.block-day-title:focus {
+    border-bottom-color: var(--primary);
+}
+
+.block-day-notes {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 6px 0;
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    color: var(--on-surface-variant);
+    outline: none;
+    resize: vertical;
+    min-height: 56px;
+    line-height: 1.5;
+    transition: color 0.7s ease;
+}
+
+.block-day-notes::placeholder,
+.block-day-title::placeholder,
+.block-field-input::placeholder {
+    color: var(--outline-variant);
+    font-weight: 300;
+    font-style: italic;
+}
+
+.modal-btn-save {
+    background: var(--primary);
+    color: var(--on-primary);
+}
+
+.modal-btn-save:hover {
+    background: var(--primary-dim);
+}
+
+/* ===================================
+   Cycle Complete Overlay
+   =================================== */
+
+.cycle-complete-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 9000;
+    background: rgba(0, 0, 0, 0);
+    transition: background-color 0.4s ease;
+}
+
+.cycle-complete-overlay.visible {
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(2px);
+}
+
+.cycle-complete-card {
+    background: var(--surface-container-lowest);
+    border-radius: 12px;
+    padding: 40px 56px;
+    text-align: center;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+    transform: scale(0.92);
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.7s ease;
+}
+
+.cycle-complete-overlay.visible .cycle-complete-card {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.cycle-complete-icon {
+    display: inline-block;
+    color: var(--primary);
+    font-size: 2.5rem !important;
+    margin-bottom: 12px;
+    transition: color 0.7s ease;
+}
+
+.cycle-complete-title {
+    font-family: var(--font-headline);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--on-background);
+    letter-spacing: -0.01em;
+    margin-top: 8px;
+    transition: color 0.7s ease;
+}
+
+/* ===================================
+   Training — Mobile Tweaks
+   =================================== */
+
+@media (max-width: 767px) {
+    .training-block-name {
+        font-size: 2rem;
+    }
+    .training-empty-title {
+        font-size: 2rem;
+    }
+    .training-header {
+        margin-bottom: 32px;
+    }
+    .training-header-right {
+        order: -1;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    .training-stat-cards {
+        flex-direction: column;
+    }
+    .training-progress {
+        padding: 20px;
+    }
+    .modal-block {
+        max-height: 90vh;
+    }
+    .training-day-item {
+        padding: 16px;
+        gap: 14px;
+    }
+    .cycle-complete-card {
+        padding: 32px 24px;
+    }
+}
+
+/* Theme fade transitions for new training elements */
+.training-lock-inner,
+.training-progress,
+.training-day-item,
+.block-day-field,
+.cycle-complete-card,
+.stat-card-cycles {
+    transition: background-color 0.7s ease, color 0.7s ease, border-color 0.7s ease;
+}
