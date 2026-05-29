@@ -59,7 +59,6 @@
         updateStats();
         setupNav();
         setupModal();
-        setupTrainingLock();
         setupBlockModal();
         setupBlockDeleteModal();
         setupTrainingActions();
@@ -77,11 +76,6 @@
 
     function onContextualAdd() {
         if (currentView === 'training') {
-            if (!isTrainingUnlocked()) {
-                const input = document.getElementById('training-lock-input');
-                if (input) input.focus();
-                return;
-            }
             openBlockModal('create');
             return;
         }
@@ -160,15 +154,7 @@
         document.getElementById('view-training').classList.toggle('hidden', view !== 'training');
 
         if (view === 'archive') renderArchivedList();
-        if (view === 'training') {
-            renderTrainingView();
-            if (!isTrainingUnlocked()) {
-                setTimeout(() => {
-                    const input = document.getElementById('training-lock-input');
-                    if (input) input.focus();
-                }, 100);
-            }
-        }
+        if (view === 'training') renderTrainingView();
     }
 
     // --- Date ---
@@ -585,8 +571,6 @@
     // Training
     // ===================================
 
-    const TRAINING_PASSWORD = 'AlessioTraining';
-    const TRAINING_SESSION_KEY = 'habitual_training_unlocked';
     const TRAINING_HEATMAP_MODE_KEY = 'habitual_training_heatmap_mode';
 
     let trainingHeatmapMode = localStorage.getItem(TRAINING_HEATMAP_MODE_KEY) || 'month';
@@ -595,55 +579,9 @@
     let pendingBlockDeleteId = null;
     let cycleOverlayTimer = null;
 
-    function isTrainingUnlocked() {
-        return sessionStorage.getItem(TRAINING_SESSION_KEY) === '1';
-    }
-
-    function setTrainingUnlocked() {
-        sessionStorage.setItem(TRAINING_SESSION_KEY, '1');
-    }
-
-    function setupTrainingLock() {
-        const form = document.getElementById('training-lock-form');
-        const input = document.getElementById('training-lock-input');
-        const error = document.getElementById('training-lock-error');
-        const lock = document.getElementById('training-lock');
-
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (input.value === TRAINING_PASSWORD) {
-                setTrainingUnlocked();
-                input.value = '';
-                error.classList.add('hidden');
-                renderTrainingView();
-            } else {
-                error.classList.remove('hidden');
-                lock.classList.add('shake');
-                setTimeout(() => lock.classList.remove('shake'), 400);
-                input.select();
-            }
-        });
-
-        input.addEventListener('input', () => {
-            if (!error.classList.contains('hidden')) error.classList.add('hidden');
-        });
-    }
-
     // --- Rendering ---
 
     function renderTrainingView() {
-        const lock = document.getElementById('training-lock');
-        const content = document.getElementById('training-content');
-
-        if (!isTrainingUnlocked()) {
-            lock.classList.remove('hidden');
-            content.classList.add('hidden');
-            return;
-        }
-
-        lock.classList.add('hidden');
-        content.classList.remove('hidden');
-
         const blocks = Storage.loadTrainingBlocks();
         const empty = document.getElementById('training-empty');
         const blockView = document.getElementById('training-block-view');
